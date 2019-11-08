@@ -1,0 +1,52 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\search\AzinfoSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Azinfos';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="azinfo-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('Create Azinfo', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+//            'id',
+            'titile',
+            'short',
+//            'body',
+//            'alias',
+//            'type.type',
+            [
+                'attribute'=>'type_id',
+                'value'=>function($d){return $d->type->type; },
+                'filter'=>\yii\helpers\ArrayHelper::map(\app\models\Type::find()->all(), 'id','type'),
+            ],
+//            'image',
+            [
+                'attribute'=>'image',
+                'value'=>function($d){
+                    return "<img src='/web/image/{$d->image}' style='width:200px;'>";
+                },
+                'filter'=>false,
+                'format'=>'raw'
+            ],
+            // 'price',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+</div>
